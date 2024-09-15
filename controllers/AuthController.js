@@ -55,7 +55,7 @@ let Verify = async function(req, res) {
         let fileData = fs.readFileSync(filePath, 'utf8');
         let uploadParams = {
             Bucket: process.env.AWS_S3_BUCKET_NAME,
-            Key: file.originalname,
+            Key: Date.now() + "_" + file.originalname,
             Body: fileData,
         };
 
