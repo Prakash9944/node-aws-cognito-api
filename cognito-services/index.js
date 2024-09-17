@@ -26,7 +26,7 @@ let verify = function (email, code) {
             if (err) {
                 return resolve({ statusCode: 422, response: err });
             }
-            return resolve({ statusCode: 400, response: result });
+            return resolve({ statusCode: 200, response: result });
         });
     });
 }
