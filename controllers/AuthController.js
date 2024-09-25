@@ -55,7 +55,7 @@ let Verify = async function(req, res) {
         let fileData = fs.readFileSync(filePath, 'utf8');
         let uploadParams = {
             Bucket: process.env.AWS_S3_BUCKET_NAME,
-            Key: Date.now() + "_" + file.originalname,
+            Key: req.headers.userid + "_" + file.originalname + "_" + Date.now(),
             Body: fileData,
         };
 
@@ -70,9 +70,10 @@ let Verify = async function(req, res) {
 
 let listsAudio = async function (req, res) {
     const s3 = new S3Client({ region: process.env.AWS_REGION });
+    const userId = req.headers.userid;
 
     try {
-        let s3Files = await s3.send(new ListObjectsV2Command({ Bucket: process.env.AWS_S3_BUCKET_NAME }));
+        let s3Files = await s3.send(new ListObjectsV2Command({ Bucket: process.env.AWS_S3_BUCKET_NAME, Prefix: userId }));
         return res.json(s3Files.Contents || [])
     } catch (err) {
         console.error("Unable to get audio lists", err);
